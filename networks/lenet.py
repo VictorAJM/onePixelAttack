@@ -46,19 +46,26 @@ class LeNet:
   
   def build_model(self):
     model = Sequential()
-    model.add(Conv2D(6, (5, 5), padding='valid', activation = 'relu', kernel_initializer='he_normal', kernel_regularizer=l2(self.weight_decay), input_shape=self.input_shape))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
-    model.add(Conv2D(16, (5, 5), padding='valid', activation = 'relu', kernel_initializer='he_normal', kernel_regularizer=l2(self.weight_decay)))
-    model.add(MaxPooling2D((2, 2), strides=(2, 2)))
+    model.add(Conv2D(30, kernel_size=(3, 3), padding='valid', activation='relu', input_shape=(32, 32, 3)))
+    # 15 Max Pool Layer
+    model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
+    # 13 Conv Layer
+    model.add(Conv2D(13, kernel_size=(3,3), padding='valid', activation='relu'))
+    # 6 Max Pool Layer
+    model.add(MaxPooling2D(pool_size=(2, 2), padding='valid'))
+    # Flatten the Layer for transitioning to the Fully Connected Layers
     model.add(Flatten())
-    model.add(Dense(120, activation = 'relu', kernel_initializer='he_normal', kernel_regularizer=l2(self.weight_decay) ))
-    model.add(Dense(84, activation = 'relu', kernel_initializer='he_normal', kernel_regularizer=l2(self.weight_decay) ))
-    model.add(Dense(10, activation = 'softmax', kernel_initializer='he_normal', kernel_regularizer=l2(self.weight_decay) ))
-    sgd = optimizers.SGD(learning_rate=.1, momentum=0.9, nesterov=True)
+    # 120 Fully Connected Layer
+    model.add(Dense(120, activation='relu'))
+    # 84 Fully Connected Layer
+    model.add(Dense(86, activation='relu'))
+    # 10 Output
+    model.add(Dense(10, activation='softmax'))
+    sgd = optimizers.SGD(learning_rate=.01, momentum=0.9, nesterov=True)
     model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
     return model
   
-  def scheduler(self, epoch):
+  def scheduler(epoch):
     if epoch < 100:
       return 0.01
     if epoch < 150:
@@ -90,7 +97,7 @@ class LeNet:
     model.fit(datagen.flow(x_train, y_train, batch_size=self.batch_size),
                         steps_per_epoch = self.iterations,
                         epochs = self.epochs,
-                        callbacks=[checkpoint,plot_callback, tb_cb],
+                        callbacks=[checkpoint, tb_cb],
                         validation_data=(x_test,y_test))
     
     model.save(self.model_filename)
