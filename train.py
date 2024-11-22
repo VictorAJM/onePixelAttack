@@ -26,6 +26,6 @@ if __name__ == '__main__':
   args = {k: v for k,v in vars(args).items() if v != None }
   del args['model']
   
-  model = models[model_name](**args,load_weights=False)
+  model = models[model_name](**args,load_weights=True)
   
   model.train()
