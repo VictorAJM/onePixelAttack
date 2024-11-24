@@ -70,9 +70,7 @@ def checkpoint(results, targeted=False):
 def load_results():
     with open('networks/results/untargeted_results.pkl', 'rb') as file:
         untargeted = pickle.load(file)
-    with open('networks/results/targeted_results.pkl', 'rb') as file:
-        targeted = pickle.load(file)
-    return untargeted, targeted
+    return untargeted
   
 
 def plot_images(images, labels_true, class_names, labels_pred=None,
@@ -151,7 +149,7 @@ def attack_stats(df, models, network_stats):
         val_accuracy = np.array(network_stats[network_stats.name == model.name].accuracy)[0]
         m_result = df[df.model == model.name]
         pixels = list(set(m_result.pixels))
-
+        print(pixels)
         for pixel in pixels:
             p_result = m_result[m_result.pixels == pixel]
             success_rate = len(p_result[p_result.success]) / len(p_result)

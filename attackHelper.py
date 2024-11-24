@@ -83,4 +83,5 @@ def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize
         model_results.append(result)
                 
     results += model_results
+    helper.checkpoint(results)
     return results
