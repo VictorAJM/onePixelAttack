@@ -66,13 +66,13 @@ def attack(img_id, model,class_names, x_test, y_test, target=None, pixel_count=1
 
     return [model.name, pixel_count, img_id, actual_class, predicted_class, success, cdiff, prior_probs, predicted_probs, attack_result.x]
   
-def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize=400, verbose=False):
+def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize=400, verbose=False,samples=10):
     results = []
 
     model_results = []
     valid_imgs = correct_imgs[correct_imgs.name == model.name].img
     
-    img_samples = np.random.choice(valid_imgs, 5, replace=False)
+    img_samples = np.random.choice(valid_imgs, samples, replace=False)
     #img_samples = np.random.choice(valid_imgs, 1000, replace=False)
     for i, img_id in enumerate(img_samples):
         print('\n', model.name, '- image', img_id, '-', i+1, '/', len(img_samples))
