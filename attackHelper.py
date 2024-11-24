@@ -62,11 +62,11 @@ def attack(img_id, model,class_names, x_test, y_test, target=None, pixel_count=1
     cdiff = prior_probs[actual_class] - predicted_probs[actual_class]
 
     # Show the best attempt at a solution (successful or not)
-    helper.plot_image(attack_image, actual_class, class_names, predicted_class)
+    #helper.plot_image(attack_image, actual_class, class_names, predicted_class)
 
     return [model.name, pixel_count, img_id, actual_class, predicted_class, success, cdiff, prior_probs, predicted_probs, attack_result.x]
   
-def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize=400, verbose=False,samples=10):
+def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize=400, verbose=False,samples=100):
     results = []
 
     model_results = []
@@ -75,7 +75,7 @@ def attack_all(model,classnames, correct_imgs,x_test,y_test, maxiter=75, popsize
     img_samples = np.random.choice(valid_imgs, samples, replace=False)
     #img_samples = np.random.choice(valid_imgs, 1000, replace=False)
     for i, img_id in enumerate(img_samples):
-        print('\n', model.name, '- image', img_id, '-', i+1, '/', len(img_samples))
+        print( model.name, '- image', img_id, '-', i+1, '/', len(img_samples),end='\r')
         
         result = attack(img_id, model,classnames,x_test,y_test, None, 1, 
                         maxiter=maxiter, popsize=popsize, 
