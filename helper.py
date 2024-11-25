@@ -121,27 +121,6 @@ def plot_images(images, labels_true, class_names, labels_pred=None,
 
     # Show the plot
     plt.show()  
-  
-def visualize_attack(df, class_names):
-    _, (x_test, _) = cifar10.load_data()
-
-    results = df[df.success].sample(1)
-
-    z = zip(results.perturbation, x_test[results.image])
-    images = np.array([perturb_image(p, img)[0]
-                       for p, img in z])
-
-    labels_true = np.array(results.true)
-    labels_pred = np.array(results.predicted)
-    titles = np.array(results.model)
-
-    # Plot the first 9 images.
-    plot_images(images=images,
-                labels_true=labels_true,
-                class_names=class_names,
-                labels_pred=labels_pred,
-                titles=titles)
-
 
 def attack_stats(df, models, network_stats):
     stats = []
